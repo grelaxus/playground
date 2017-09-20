@@ -1,15 +1,21 @@
 package com.vk.dal.domain;
 
 import org.hibernate.annotations.AttributeAccessor;
+import org.hibernate.annotations.Type;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @AttributeAccessor("field")
 @Table(name = "customer")
-public class Customer extends GenericEntity {
+public class Customer implements Serializable{
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name="id",unique=true, nullable=false, insertable=true, updatable=true)
+  @Type(type="long")
+  private Long id;
+
   @Column(name = "name")
   private String name;
 
@@ -26,5 +32,15 @@ public class Customer extends GenericEntity {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+//  @Override
+  public Long getId() {
+    return id;
+  }
+
+//  @Override
+  public void setId(Long id) {
+    this.id = id;
   }
 }

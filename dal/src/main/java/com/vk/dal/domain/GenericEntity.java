@@ -5,8 +5,8 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.io.Serializable;
 
-
-@MappedSuperclass
+@Entity
+//@MappedSuperclass
 public class GenericEntity  implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)

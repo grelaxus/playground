@@ -1,39 +1,26 @@
 package com.vk.dal;
 
+import com.vk.dal.config.MySQLAutoconfiguration;
 import com.vk.dal.domain.Customer;
 import com.vk.dal.repository.CustomerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.sql.DataSource;
-
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import static java.lang.System.exit;
 
-
-
-@SpringBootApplication /*(exclude = {DataSourceAutoConfiguration.class})*//*(exclude = MySQLAutoconfiguration.class)*/
-public class Application implements CommandLineRunner {
+public class Application {
   private static ApplicationContext applicationContext;
 
-  @Autowired
-  DataSource dataSource;
-
-  @Autowired
-  CustomerRepository customerRepository;
+  static CustomerRepository customerRepository;
 
   public static void main(String[] args) {
-    applicationContext = SpringApplication.run(Application.class, args);
+
+    AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(MySQLAutoconfiguration.class);
+
+    customerRepository = ctx.getBean(CustomerRepository.class);
+    runTest();
   }
 
-  @Transactional/*(readOnly = true)*/
-  @Override
-  public void run(String... args) throws Exception {
-
-    System.out.println("DATASOURCE = " + dataSource);
+  private static void runTest () {
 
     Customer customerJohn = customerRepository.save(new Customer("John"));
     Customer customerAlice = customerRepository.save(new Customer("Alice"));
