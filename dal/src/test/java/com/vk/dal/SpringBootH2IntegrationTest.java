@@ -1,8 +1,9 @@
 package com.vk.dal;
 
 import com.vk.dal.config.H2JPACustomPropertiesConfig;
+import com.vk.dal.domain.Customer;
 import com.vk.dal.domain.GenericEntity;
-import com.vk.dal.repository.GenericEntityRepository;
+import com.vk.dal.repository.CustomerRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,16 +17,16 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ComponentScan ("com.vk.dal")
 
-@SpringBootTest(classes = { Application.class, H2JPACustomPropertiesConfig.class })
+@SpringBootTest(classes = { H2JPACustomPropertiesConfig.class })
 public class SpringBootH2IntegrationTest {
   @Autowired
-  private GenericEntityRepository genericEntityRepository;
+  private CustomerRepository customerRepository;
 
   @Test
   public void givenGenericEntityRepository_whenSaveAndRetreiveEntity_thenOK() {
-    GenericEntity genericEntity = (GenericEntity) genericEntityRepository.save(new GenericEntity("test"));
-    GenericEntity foundEntity = (GenericEntity)genericEntityRepository.findOne(genericEntity.getId());
-    assertNotNull(foundEntity);
-    assertEquals(genericEntity.getValue(), foundEntity.getValue());
+    Customer customer = customerRepository.save(new Customer ("test"));
+    Customer foundCustomer = customerRepository.findOne(customer.getId());
+    assertNotNull(foundCustomer);
+    assertEquals(customer.getName(), foundCustomer.getName());
   }
 }

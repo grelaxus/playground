@@ -2,6 +2,7 @@ package com.vk.dal.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -19,8 +20,7 @@ import java.util.Properties;
 @Configuration
 @EnableJpaRepositories(basePackages = { "com.vk.dal.repository"})
 @PropertySource("classpath:persistence-generic-entity.properties")
-@EnableTransactionManagement
-
+@ComponentScan
 public class H2JPACustomPropertiesConfig {
 
 
@@ -33,8 +33,8 @@ public class H2JPACustomPropertiesConfig {
       final DriverManagerDataSource dataSource = new DriverManagerDataSource();
       dataSource.setDriverClassName(env.getProperty("jdbc.driverClassName"));
       dataSource.setUrl(env.getProperty("jdbc.url"));
-      dataSource.setUsername(env.getProperty("jdbc.user"));
-      dataSource.setPassword(env.getProperty("jdbc.pass"));
+      dataSource.setUsername(env.getProperty("jdbc.username"));
+      dataSource.setPassword(env.getProperty("jdbc.password"));
 
       return dataSource;
     }
@@ -43,7 +43,7 @@ public class H2JPACustomPropertiesConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
       final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
       em.setDataSource(dataSource());
-      em.setPackagesToScan(new String[] { "com.vk.dal" /*"org.baeldung.domain", "org.baeldung.boot.model", "org.baeldung.boot.boottest" */});
+      em.setPackagesToScan(new String[] {"com.vk.dal"});
       em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
       em.setJpaProperties(additionalProperties());
       return em;

@@ -7,6 +7,11 @@
   <groupId>com.vk</groupId>
   <artifactId>dal</artifactId>
   <version>1.0-SNAPSHOT</version>
+  <properties>
+    <spring-data-jpa.version>1.11.7.RELEASE</spring-data-jpa.version>
+    <springframework.version>4.3.11.RELEASE</springframework.version>
+    <hibernate.version>5.2.11.Final</hibernate.version>
+  </properties>
   <build>
     <resources>
       <resource>
@@ -34,21 +39,63 @@
           <target>1.8</target>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>2.3</version>
+        <configuration>
+          <createDependencyReducedPom>true</createDependencyReducedPom>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 
   <dependencies>
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-jpa</artifactId>
-      <version>1.5.2.RELEASE</version>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-jpa</artifactId>
+      <version>${spring-data-jpa.version}</version>
     </dependency>
 <!--    <dependency>
-      <groupId>com.h2database</groupId>
-      <artifactId>h2</artifactId>
-      <version>1.4.194</version>
-      <scope>test</scope>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>${springframework.version}</version>
     </dependency>-->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-entitymanager</artifactId>
+      <version>${hibernate.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>net.bytebuddy</groupId>
+          <artifactId>byte-buddy</artifactId>
+        </exclusion>
+<!--        <exclusion>
+          <groupId>org.jboss.logging</groupId>
+          <artifactId>jboss-logging</artifactId>
+        </exclusion>-->
+<!--        <exclusion>
+          <groupId>antlr</groupId>
+          <artifactId>antlr</artifactId>
+        </exclusion>-->
+        <exclusion>
+          <groupId>org.jboss</groupId>
+          <artifactId>jandex</artifactId>
+        </exclusion>
+<!--        <exclusion>
+          <groupId>com.fasterxml</groupId>
+          <artifactId>classmate</artifactId>
+        </exclusion>-->
+      </exclusions>
+    </dependency>
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
@@ -58,6 +105,12 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <version>1.5.2.RELEASE</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <version>1.4.194</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
